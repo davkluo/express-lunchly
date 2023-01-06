@@ -34,7 +34,7 @@ class Customer {
   /** find customers based on search term */
 
   static async search(term) {
-    const likeTerm = '%' + term.toLowerCase() + '%';
+    const likeTerm = '%' + term + '%';
     const results = await db.query(
       `SELECT id,
                 first_name AS "firstName",
@@ -42,7 +42,7 @@ class Customer {
                 phone,
                 notes
           FROM customers
-          WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE $1
+          WHERE CONCAT(first_name, ' ', last_name) ILIKE $1
           ORDER BY last_name, first_name`, [likeTerm]
     );
     return results.rows.map(c => new Customer(c));

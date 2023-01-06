@@ -40,6 +40,21 @@ class Reservation {
     return results.rows.map(row => new Reservation(row));
   }
 
+  /** returns reservation notes when requested */
+  get notes(){
+    return this._notes;
+  }
+
+  /** set notes to val or to empty string if val is empty*/
+  set notes(val){
+    if(val) {
+      this._notes = val;
+    }
+    else{
+      this._notes = "";
+    }
+  }
+
   /** save this reservation */
 
   async save() {
