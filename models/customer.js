@@ -16,6 +16,22 @@ class Customer {
     this.notes = notes;
   }
 
+  /** returns customer notes when requested */
+  get notes(){
+    return this._notes;
+  }
+
+  /** set notes to val or to empty string if val is empty*/
+  set notes(val){
+    if(val) {
+      this._notes = val;
+    }
+    else{
+      this._notes = "";
+    }
+  }
+
+
   /** find all customers. */
 
   static async all() {
