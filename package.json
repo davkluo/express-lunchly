@@ -1,16 +1,16 @@
 {
   "name": "lunchly",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "*",
-    "express": "^5.0.0-beta",
+    "express": "^5.0.0-beta.1",
     "moment": "*",
     "nunjucks": "*",
     "pg": "*"
@@ -18,5 +18,15 @@
   "devDependencies": {
     "jest": "*",
     "supertest": "*"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davkluo/express-lunchly.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/davkluo/express-lunchly/issues"
+  },
+  "homepage": "https://github.com/davkluo/express-lunchly#readme",
+  "description": ""
 }
