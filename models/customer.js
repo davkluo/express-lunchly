@@ -1,9 +1,12 @@
 "use strict";
 
+const { Value } = require("nunjucks/src/nodes");
 /** Customer for Lunchly */
 
 const db = require("../db");
 const Reservation = require("./reservation");
+
+const { BadRequestError } = require("../expressError");
 
 /** Customer of the restaurant. */
 
@@ -18,10 +21,29 @@ class Customer {
 
   // GETTERS AND SETTERS
 
+  /** gets customer phone number */
+  get phone(){
+    return this._phone;
+  }
+
+  /** sets customer phone number */
+  set phone(val){
+    const phoneNumberRegex = /^\(?(\d{3})\)?[-. ]?(\d{3})[-. ]?(\d{4})$/;
+    console.log("val type-", typeof val)
+    if(val.match(phoneNumberRegex) || val === ''){
+      this._phone = val
+    }
+    else{
+      throw new BadRequestError("That is not a valid phone number!")
+    }
+  }
+
+
   /** returns customer notes when requested */
   get notes(){
     return this._notes;
   }
+
 
   /** set notes to val or to empty string if val is empty*/
   set notes(val){

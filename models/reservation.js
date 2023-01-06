@@ -56,8 +56,12 @@ class Reservation {
 
   /** setter for startAt */
   set startAt(val) {
+    const now = new Date()
     if (!(val instanceof Date)) {
       throw new BadRequestError("That ain't no date.");
+    }
+    if (val<now){
+      throw new BadRequestError("No time travel!");
     }
 
     this._startAt = val;
