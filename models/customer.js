@@ -31,6 +31,23 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  /** find customers based on search term */
+
+  static async search(term) {
+    const results = await db.query(
+      `SELECT id,
+                first_name AS "firstName",
+                last_name  AS "lastName",
+                phone,
+                notes
+          FROM customers
+          WHERE LOWER(first_name) LIKE $1
+          ORDER BY last_name, first_name`, ['%'+term.toLowerCase()+'%']
+    )
+    console.log("results- ",results)
+    return results.rows.map(c => new Customer(c));
+  }
+
   /** get a customer by ID. */
 
   static async get(id) {
