@@ -16,6 +16,8 @@ class Customer {
     this.notes = notes;
   }
 
+  // GETTERS AND SETTERS
+
   /** returns customer notes when requested */
   get notes(){
     return this._notes;
@@ -31,6 +33,11 @@ class Customer {
     }
   }
 
+  /** Return the full name of the customer */
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 
   /** find all customers. */
 
@@ -142,12 +149,6 @@ class Customer {
           ],
       );
     }
-  }
-
-  /** Return the full name of the customer */
-
-  fullName() {
-    return `${this.firstName} ${this.lastName}`;
   }
 }
 

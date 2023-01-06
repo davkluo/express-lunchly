@@ -3,6 +3,7 @@
 /** Reservation for Lunchly */
 
 const moment = require("moment");
+const { BadRequestError } = require("../expressError");
 
 const db = require("../db");
 
@@ -15,6 +16,65 @@ class Reservation {
     this.numGuests = numGuests;
     this.startAt = startAt;
     this.notes = notes;
+  }
+
+  // GETTERS AND SETTERS
+
+  /** returns reservation notes when requested */
+  get notes(){
+    return this._notes;
+  }
+
+  /** set notes to val or to empty string if val is empty*/
+  set notes(val){
+    if(val) {
+      this._notes = val;
+    }
+    else{
+      this._notes = "";
+    }
+  }
+
+  /** getter for numGuests */
+  get numGuests() {
+    return this._numGuests;
+  }
+
+  /** setter for numGuests */
+  set numGuests(val) {
+    if (val < 1) {
+      throw new BadRequestError('Who is this for anyway?');
+    }
+
+    this._numGuests = val;
+  }
+
+  /** getter for startAt */
+  get startAt() {
+    return this._startAt;
+  }
+
+  /** setter for startAt */
+  set startAt(val) {
+    if (!(val instanceof Date)) {
+      throw new BadRequestError("That ain't no date.");
+    }
+
+    this._startAt = val;
+  }
+
+  /** getter for customerId */
+  get customerId() {
+    return this._customerId;
+  }
+
+  /** setter for customerId */
+  set customerId(val) {
+    if (this._customerId !== undefined) {
+      throw new BadRequestError('Already have a customer id.');
+    }
+
+    this._customerId = val;
   }
 
   /** formatter for startAt */
@@ -38,21 +98,6 @@ class Reservation {
     );
 
     return results.rows.map(row => new Reservation(row));
-  }
-
-  /** returns reservation notes when requested */
-  get notes(){
-    return this._notes;
-  }
-
-  /** set notes to val or to empty string if val is empty*/
-  set notes(val){
-    if(val) {
-      this._notes = val;
-    }
-    else{
-      this._notes = "";
-    }
   }
 
   /** save this reservation */
