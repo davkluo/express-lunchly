@@ -60,9 +60,9 @@ class Reservation {
     if (!(val instanceof Date)) {
       throw new BadRequestError("That ain't no date.");
     }
-    if (val<now){
-      throw new BadRequestError("No time travel!");
-    }
+    // if (val<now){
+    //   throw new BadRequestError("No time travel!");
+    // }
 
     this._startAt = val;
   }

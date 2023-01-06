@@ -21,22 +21,23 @@ class Customer {
 
   // GETTERS AND SETTERS
 
-  /** gets customer phone number */
-  get phone(){
-    return this._phone;
-  }
+  // /** gets customer phone number */
+  // get phone(){
+  //   return this._phone;
+  // }
 
-  /** sets customer phone number */
-  set phone(val){
-    const phoneNumberRegex = /^\(?(\d{3})\)?[-. ]?(\d{3})[-. ]?(\d{4})$/;
-    console.log("val type-", typeof val)
-    if(val.match(phoneNumberRegex) || val === ''){
-      this._phone = val
-    }
-    else{
-      throw new BadRequestError("That is not a valid phone number!")
-    }
-  }
+  // /** sets customer phone number */
+  // /* would also need to take into account phone numbers with extentions.
+  // set phone(val){
+  //   const phoneNumberRegex = /^\(?(\d{3})\)?[-. ]?(\d{3})[-. ]?(\d{4})$/;
+  //   console.log("val type-", typeof val)
+  //   if(val.match(phoneNumberRegex) || val === ''){
+  //     this._phone = val
+  //   }
+  //   else{
+  //     throw new BadRequestError("That is not a valid phone number!")
+  //   }
+  // }
 
 
   /** returns customer notes when requested */
