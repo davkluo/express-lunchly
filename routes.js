@@ -14,9 +14,9 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
   let customers;
+
   if(req.query.search){
-    //search the db for customer at that search criteria
-    customers = await Customer.search(req.query.search)
+    customers = await Customer.search(req.query.search);
   }
   else{
     customers = await Customer.all();
