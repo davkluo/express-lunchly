@@ -132,7 +132,35 @@ class Reservation {
       );
     }
   }
+
+  /** get a reservation by ID. */
+
+  static async get(id) {
+    const results = await db.query(
+          `SELECT id,
+            customer_id AS "customerId",
+            num_guests AS "numGuests",
+            start_at AS "startAt",
+            notes AS "notes"
+          FROM reservations
+          WHERE id = $1`,
+          [id],
+    );
+
+    const reservation = results.rows[0];
+
+    if (reservation === undefined) {
+      const err = new Error(`No such reservation: ${id}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return new Reservation(reservation);
+  }
+
 }
+
+
 
 
 module.exports = Reservation;
