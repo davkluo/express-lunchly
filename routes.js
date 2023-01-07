@@ -37,8 +37,8 @@ router.post("/add/", async function (req, res, next) {
   if (req.body === undefined) {
     throw new BadRequestError();
   }
-  const { firstName, lastName, phone, notes } = req.body;
-  const customer = new Customer({ firstName, lastName, phone, notes });
+  const { firstName, middleName, lastName, phone, notes } = req.body;
+  const customer = new Customer({ firstName, middleName, lastName, phone, notes });
   await customer.save();
 
   return res.redirect(`/${customer.id}/`);

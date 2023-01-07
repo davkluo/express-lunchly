@@ -11,9 +11,10 @@ const { BadRequestError } = require("../expressError");
 /** Customer of the restaurant. */
 
 class Customer {
-  constructor({ id, firstName, lastName, phone, notes }) {
+  constructor({ id, firstName, middleName, lastName, phone, notes }) {
     this.id = id;
     this.firstName = firstName;
+    this.middleName = middleName;
     this.lastName = lastName;
     this.phone = phone;
     this.notes = notes;
@@ -59,7 +60,7 @@ class Customer {
   /** Return the full name of the customer */
 
   get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${(this.middleName) ? this.middleName + ' ' : ''}${this.lastName}`;
   }
 
   /** find all customers. */
@@ -68,6 +69,7 @@ class Customer {
     const results = await db.query(
           `SELECT id,
                   first_name AS "firstName",
+                  middle_name AS "middleName",
                   last_name  AS "lastName",
                   phone,
                   notes
@@ -80,15 +82,17 @@ class Customer {
   /** find customers based on search term */
 
   static async search(term) {
-    const likeTerm = '%' + term + '%';
+    let likeTerm = '%' + term + '%';
+    likeTerm = likeTerm.replace(/\s/g, ''); // Strips spaces from search term
     const results = await db.query(
       `SELECT id,
                 first_name AS "firstName",
+                middle_name AS "middleName",
                 last_name  AS "lastName",
                 phone,
                 notes
           FROM customers
-          WHERE CONCAT(first_name, ' ', last_name) ILIKE $1
+          WHERE CONCAT(first_name, middle_name, last_name) ILIKE $1
           ORDER BY last_name, first_name`, [likeTerm]
     );
     return results.rows.map(c => new Customer(c));
@@ -100,6 +104,7 @@ class Customer {
     const results = await db.query(
           `SELECT id,
                   first_name AS "firstName",
+                  middle_name AS "middleName",
                   last_name  AS "lastName",
                   phone,
                   notes
@@ -125,6 +130,7 @@ class Customer {
     const results = await db.query( // Is it okay to use COUNT(*)?
       `SELECT c.id,
           c.first_name AS "firstName",
+          c.middle_name AS "middleName",
           c.last_name  AS "lastName",
           c.phone,
           c.notes
@@ -150,21 +156,23 @@ class Customer {
   async save() {
     if (this.id === undefined) {
       const result = await db.query(
-            `INSERT INTO customers (first_name, last_name, phone, notes)
-             VALUES ($1, $2, $3, $4)
+            `INSERT INTO customers (first_name, middle_name, last_name, phone, notes)
+             VALUES ($1, $2, $3, $4, $5)
              RETURNING id`,
-          [this.firstName, this.lastName, this.phone, this.notes],
+          [this.firstName, this.middleName, this.lastName, this.phone, this.notes],
       );
       this.id = result.rows[0].id;
     } else {
       await db.query(
             `UPDATE customers
              SET first_name=$1,
-                 last_name=$2,
-                 phone=$3,
-                 notes=$4
-             WHERE id = $5`, [
+                 middle_name=$2,
+                 last_name=$3,
+                 phone=$4,
+                 notes=$5
+             WHERE id = $6`, [
             this.firstName,
+            this.middleName,
             this.lastName,
             this.phone,
             this.notes,
